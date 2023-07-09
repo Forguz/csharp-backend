@@ -19,9 +19,11 @@ namespace KanbanTasks.Models
     public Board Board { get; set; }
 
     [Column("created_at"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DataType(DataType.DateTime)]
     public DateTime CreatedAt { get; set; }
 
     [Column("updated_at"), DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [DataType(DataType.DateTime)]
     public DateTime UpdatedAt { get; set; }
   }
 }

@@ -21,9 +21,11 @@ namespace KanbanTasks.Models
     public bool Description { get; set; }
 
     [Column("created_at"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DataType(DataType.DateTime)]
     public DateTime CreatedAt { get; set; }
 
     [Column("updated_at"), DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [DataType(DataType.DateTime)]
     public DateTime UpdatedAt { get; set; }
   }
 }

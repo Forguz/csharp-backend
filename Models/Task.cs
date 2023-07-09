@@ -24,10 +24,12 @@ namespace KanbanTasks.Models
     [Column("description", TypeName = "text")]
     public string Description { get; set; }
 
+    [DataType(DataType.DateTime)]
     [Column("created_at"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; }
 
-    [Column("updated_at"), DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [DataType(DataType.DateTime)]
+    [Column("updated_at"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime UpdatedAt { get; set; }
   }
 }
