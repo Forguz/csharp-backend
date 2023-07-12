@@ -9,6 +9,8 @@ namespace KanbanTasks.Data
     public DbSet<Board> Boards { get; set; }
     public DbSet<Column> Columns { get; set; }
 
+    public PostgresContext(DbContextOptions options) : base(options) { }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       // Addd the Postgres Extension for UUID generation

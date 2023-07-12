@@ -1,13 +1,9 @@
 using System;
-using System.IO;
 using System.Net;
-using System.Text;
-using System.Linq;
-using System.Threading.Tasks;
-using KanbanTasks.Data;
 using KanbanTasks.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using KanbanTasks.Contracts;
+using System.Threading.Tasks;
 
 namespace KanbanTasks.Controllers
 {
@@ -15,19 +11,19 @@ namespace KanbanTasks.Controllers
   [Route("api/[controller]")]
   public class BoardsController : ControllerBase
   {
-    private readonly PostgresContext _context;
+    private readonly IBoardRepository _boardRepository;
 
-    public BoardsController(PostgresContext context)
+    public BoardsController(IBoardRepository boardRepository)
     {
-      _context = context;
+      _boardRepository = boardRepository;
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public async Task<IActionResult> List()
     {
       try
       {
-        var boards = _context.Boards;
+        var boards = await _boardRepository.FindAll(); ;
         return Ok(boards);
       }
       catch (Exception ex)
@@ -37,13 +33,33 @@ namespace KanbanTasks.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] Board board)
+    public async Task<IActionResult> Create([FromBody] Board board)
     {
       if (ModelState.IsValid)
       {
-        await _context.Boards.AddAsync(board);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(Get), new { id = board.BoardId }, board);
+        await _boardRepository.Create(board);
+        return CreatedAtAction(nameof(List), new { id = board.BoardId }, board);
+      }
+      else
+      {
+        return BadRequest(ModelState);
+      }
+    }
+
+    public class PutBody
+    {
+      public string Title { get; set; }
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Update([FromQuery] Guid? id, [FromBody] PutBody body)
+    {
+      if (id != null && body != null)
+      {
+        Board board1 = await _boardRepository.FindById((Guid)id);
+        board1.Title = body.Title;
+        await _boardRepository.Update(board1);
+        return Ok(board1);
       }
       else
       {

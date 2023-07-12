@@ -1,4 +1,6 @@
+using KanbanTasks.Contracts;
 using KanbanTasks.Data;
+using KanbanTasks.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,8 +11,6 @@ public class Startup
   public void ConfigureServices(IServiceCollection services)
   {
     // Configuração dos serviços do ASP.NET Core
-    services.AddDbContext<PostgresContext>();
-    services.AddControllers();
     services.AddCors(options =>
     {
       options.AddPolicy("AllowCors",
@@ -21,6 +21,9 @@ public class Startup
                   .AllowAnyHeader();
           });
     });
+    services.AddDbContext<PostgresContext>();
+    services.AddScoped<IBoardRepository, BoardRepository>();
+    services.AddControllers();
   }
 
   public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -31,6 +34,7 @@ public class Startup
       app.UseDeveloperExceptionPage();
     }
 
+    app.UseHttpsRedirection();
     app.UseRouting();
 
     app.UseEndpoints(endpoints =>
