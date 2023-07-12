@@ -7,8 +7,8 @@ namespace KanbanTasks.Models
   [Table("subtasks")]
   public class Subtask
   {
-    [Column("subtask_id", TypeName = "UUID")]
-    public Guid SubtaskId { get; set; }
+    [Column("id", TypeName = "UUID")]
+    public Guid Id { get; set; }
 
     [Column("task_id", TypeName = "UUID")]
     public Guid TaskId { get; set; }

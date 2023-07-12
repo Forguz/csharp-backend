@@ -8,8 +8,8 @@ namespace KanbanTasks.Models
   [Table("boards")]
   public class Board
   {
-    [Column("board_id", TypeName = "UUID")]
-    public Guid BoardId { get; set; }
+    [Column("id", TypeName = "UUID")]
+    public Guid Id { get; set; }
 
     [Column("title", TypeName = "varchar(50)"), Required]
     public string Title { get; set; }

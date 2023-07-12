@@ -18,7 +18,7 @@ namespace KanbanTasks.Data
       modelBuilder.HasPostgresExtension("moddatetime");
 
       modelBuilder.Entity<Board>()
-        .Property(b => b.BoardId)
+        .Property(b => b.Id)
         .HasDefaultValueSql("uuid_generate_v4()");
 
       modelBuilder.Entity<Board>()
@@ -30,7 +30,7 @@ namespace KanbanTasks.Data
         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
       modelBuilder.Entity<Column>()
-        .Property(c => c.ColumnId)
+        .Property(c => c.Id)
         .HasDefaultValueSql("uuid_generate_v4()");
 
       modelBuilder.Entity<Column>()
@@ -42,7 +42,7 @@ namespace KanbanTasks.Data
         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
       modelBuilder.Entity<Task>()
-        .Property(t => t.TaskId)
+        .Property(t => t.Id)
         .HasDefaultValueSql("uuid_generate_v4()");
 
       modelBuilder.Entity<Task>()
@@ -54,7 +54,7 @@ namespace KanbanTasks.Data
         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
       modelBuilder.Entity<Subtask>()
-        .Property(s => s.SubtaskId)
+        .Property(s => s.Id)
         .HasDefaultValueSql("uuid_generate_v4()");
 
       modelBuilder.Entity<Subtask>()

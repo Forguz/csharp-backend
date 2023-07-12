@@ -9,13 +9,13 @@ namespace KanbanTasks.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class BoardsController : ControllerBase
+  public class ColumnsController : ControllerBase
   {
-    private readonly IBoardRepository _boardRepository;
+    private readonly IColumnRepository _columnRepository;
 
-    public BoardsController(IBoardRepository boardRepository)
+    public ColumnsController(IColumnRepository columnRepository)
     {
-      _boardRepository = boardRepository;
+      _columnRepository = columnRepository;
     }
 
     [HttpGet]
@@ -23,8 +23,8 @@ namespace KanbanTasks.Controllers
     {
       try
       {
-        var boards = await _boardRepository.FindAll(); ;
-        return Ok(boards);
+        var Columns = await _columnRepository.FindAll(); ;
+        return Columns != null ? Ok(Columns) : NotFound();
       }
       catch (Exception ex)
       {
@@ -32,13 +32,13 @@ namespace KanbanTasks.Controllers
       }
     }
 
-    [HttpGet("{query}")]
+    [HttpGet]
     public async Task<IActionResult> FindOne([FromQuery] Guid id)
     {
       try
       {
-        var board = await _boardRepository.FindById(id); ;
-        return board != null ? Ok(board) : NotFound();
+        var Column = await _columnRepository.FindById(id); ;
+        return Column != null ? Ok(Column) : NotFound();
       }
       catch (Exception ex)
       {
@@ -47,46 +47,42 @@ namespace KanbanTasks.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Board board)
+    public async Task<IActionResult> Create([FromBody] Column column)
     {
       if (ModelState.IsValid)
       {
-        await _boardRepository.Create(board);
-        return CreatedAtAction(nameof(FindAll), new { id = board.Id }, board);
+        await _columnRepository.Create(column);
+        return CreatedAtAction(nameof(FindAll), new { id = column.Id }, column);
       }
       else
       {
         return BadRequest(ModelState);
       }
-    }
-
-    public class PutBody
-    {
-      public string Title { get; set; }
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromQuery] Guid? id, [FromBody] PutBody body)
+    public async Task<IActionResult> Update([FromQuery] Guid? id, [FromBody] Column body)
     {
       if (id != null && body != null)
       {
-        Board board1 = await _boardRepository.FindById((Guid)id);
-        board1.Title = body.Title;
-        await _boardRepository.Update(board1);
-        return Ok(board1);
+        Column column = await _columnRepository.FindById((Guid)id);
+        column.Title = body.Title;
+        await _columnRepository.Update(column);
+        return Ok(column);
       }
       else
       {
         return BadRequest(ModelState);
       }
     }
+
     [HttpDelete]
     public async Task<IActionResult> Delete([FromQuery] Guid? id)
     {
       if (id != null)
       {
-        Board board = await _boardRepository.Delete((Guid)id);
-        return Ok(board);
+        Column column = await _columnRepository.Delete((Guid)id);
+        return Ok(column);
       }
       else
       {
