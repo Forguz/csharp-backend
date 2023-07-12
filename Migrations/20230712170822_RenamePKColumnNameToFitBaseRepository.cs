@@ -43,12 +43,12 @@ namespace csharp_backend.Migrations
             migrationBuilder.RenameColumn(
                 table: "subtasks",
                 name: "id",
-                newName: "subtasks_id"
+                newName: "subtask_id"
             );
             migrationBuilder.RenameColumn(
                 table: "tasks",
                 name: "id",
-                newName: "tasks_id"
+                newName: "task_id"
             );
             migrationBuilder.RenameColumn(
                 table: "columns",

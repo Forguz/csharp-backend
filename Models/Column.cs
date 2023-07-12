@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,6 +18,8 @@ namespace KanbanTasks.Models
     public Guid BoardId { get; set; }
 
     public Board Board { get; set; }
+
+    public ICollection<Task> Tasks { get; set; } = new List<Task>();
 
     [Column("created_at"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DataType(DataType.DateTime)]

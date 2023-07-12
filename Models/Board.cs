@@ -14,8 +14,8 @@ namespace KanbanTasks.Models
     [Column("title", TypeName = "varchar(50)"), Required]
     public string Title { get; set; }
 
-    public ICollection<Column> Columns { get; } = new List<Column>();
-    public ICollection<Task> Tasks { get; } = new List<Task>();
+    public ICollection<Column> Columns { get; set; } = new List<Column>();
+    public ICollection<Task> Tasks { get; set; } = new List<Task>();
 
     [Column("created_at"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DataType(DataType.DateTime)]

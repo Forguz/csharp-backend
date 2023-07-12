@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,6 +24,8 @@ namespace KanbanTasks.Models
 
     [Column("description", TypeName = "text")]
     public string Description { get; set; }
+
+    public ICollection<Subtask> Subtasks { get; set; } = new List<Subtask>();
 
     [DataType(DataType.DateTime)]
     [Column("created_at"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
