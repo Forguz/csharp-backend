@@ -9,13 +9,13 @@ namespace KanbanTasks.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class BoardsController : ControllerBase
+  public class TasksController : ControllerBase
   {
-    private readonly IBoardRepository _boardRepository;
+    private readonly ITaskRepository _taskRepository;
 
-    public BoardsController(IBoardRepository boardRepository)
+    public TasksController(ITaskRepository TaskRepository)
     {
-      _boardRepository = boardRepository;
+      _taskRepository = TaskRepository;
     }
 
     [HttpGet]
@@ -23,8 +23,8 @@ namespace KanbanTasks.Controllers
     {
       try
       {
-        var boards = await _boardRepository.FindAll(); ;
-        return Ok(boards);
+        var tasks = await _taskRepository.FindAll(); ;
+        return tasks != null ? Ok(tasks) : NotFound();
       }
       catch (Exception ex)
       {
@@ -37,8 +37,8 @@ namespace KanbanTasks.Controllers
     {
       try
       {
-        var board = await _boardRepository.FindById(id); ;
-        return board != null ? Ok(board) : NotFound();
+        var task = await _taskRepository.FindById(id); ;
+        return task != null ? Ok(task) : NotFound();
       }
       catch (Exception ex)
       {
@@ -47,46 +47,42 @@ namespace KanbanTasks.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Board board)
+    public async Task<IActionResult> Create([FromBody] Models.Task Task)
     {
       if (ModelState.IsValid)
       {
-        await _boardRepository.Create(board);
-        return CreatedAtAction(nameof(FindAll), new { id = board.Id }, board);
+        await _taskRepository.Create(Task);
+        return CreatedAtAction(nameof(FindAll), new { id = Task.Id }, Task);
       }
       else
       {
         return BadRequest(ModelState);
       }
-    }
-
-    public class PutBody
-    {
-      public string Title { get; set; }
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromQuery] Guid? id, [FromBody] PutBody body)
+    public async Task<IActionResult> Update([FromQuery] Guid? id, [FromBody] Models.Task body)
     {
       if (id != null && body != null)
       {
-        Board board1 = await _boardRepository.FindById((Guid)id);
-        board1.Title = body.Title;
-        await _boardRepository.Update(board1);
-        return Ok(board1);
+        Models.Task Task = await _taskRepository.FindById((Guid)id);
+        Task.Title = body.Title;
+        await _taskRepository.Update(Task);
+        return Ok(Task);
       }
       else
       {
         return BadRequest(ModelState);
       }
     }
+
     [HttpDelete]
     public async Task<IActionResult> Delete([FromQuery] Guid? id)
     {
       if (id != null)
       {
-        Board board = await _boardRepository.Delete((Guid)id);
-        return Ok(board);
+        Models.Task Task = await _taskRepository.Delete((Guid)id);
+        return Ok(Task);
       }
       else
       {

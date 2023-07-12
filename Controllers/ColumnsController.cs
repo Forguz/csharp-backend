@@ -32,13 +32,13 @@ namespace KanbanTasks.Controllers
       }
     }
 
-    [HttpGet]
-    public async Task<IActionResult> FindOne([FromQuery] Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> FindOne(Guid id)
     {
       try
       {
-        var Column = await _columnRepository.FindById(id); ;
-        return Column != null ? Ok(Column) : NotFound();
+        var column = await _columnRepository.FindById(id); ;
+        return column != null ? Ok(column) : NotFound();
       }
       catch (Exception ex)
       {

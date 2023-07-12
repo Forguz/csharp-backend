@@ -26,6 +26,8 @@ namespace KanbanTasks
       services.AddDbContext<PostgresContext>();
       services.AddScoped<IBoardRepository, BoardRepository>();
       services.AddScoped<IColumnRepository, ColumnRepository>();
+      services.AddScoped<ITaskRepository, TaskRepository>();
+      services.AddScoped<ISubtaskRepository, SubtaskRepository>();
       services.AddControllers();
     }
 

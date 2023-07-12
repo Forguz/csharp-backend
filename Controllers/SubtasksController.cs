@@ -9,13 +9,13 @@ namespace KanbanTasks.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class BoardsController : ControllerBase
+  public class SubtasksController : ControllerBase
   {
-    private readonly IBoardRepository _boardRepository;
+    private readonly ISubtaskRepository _subtaskRepository;
 
-    public BoardsController(IBoardRepository boardRepository)
+    public SubtasksController(ISubtaskRepository SubtaskRepository)
     {
-      _boardRepository = boardRepository;
+      _subtaskRepository = SubtaskRepository;
     }
 
     [HttpGet]
@@ -23,8 +23,8 @@ namespace KanbanTasks.Controllers
     {
       try
       {
-        var boards = await _boardRepository.FindAll(); ;
-        return Ok(boards);
+        var subtasks = await _subtaskRepository.FindAll(); ;
+        return subtasks != null ? Ok(subtasks) : NotFound();
       }
       catch (Exception ex)
       {
@@ -37,8 +37,8 @@ namespace KanbanTasks.Controllers
     {
       try
       {
-        var board = await _boardRepository.FindById(id); ;
-        return board != null ? Ok(board) : NotFound();
+        var subtask = await _subtaskRepository.FindById(id); ;
+        return subtask != null ? Ok(subtask) : NotFound();
       }
       catch (Exception ex)
       {
@@ -47,46 +47,42 @@ namespace KanbanTasks.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Board board)
+    public async Task<IActionResult> Create([FromBody] Subtask Subtask)
     {
       if (ModelState.IsValid)
       {
-        await _boardRepository.Create(board);
-        return CreatedAtAction(nameof(FindAll), new { id = board.Id }, board);
+        await _subtaskRepository.Create(Subtask);
+        return CreatedAtAction(nameof(FindAll), new { id = Subtask.Id }, Subtask);
       }
       else
       {
         return BadRequest(ModelState);
       }
-    }
-
-    public class PutBody
-    {
-      public string Title { get; set; }
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromQuery] Guid? id, [FromBody] PutBody body)
+    public async Task<IActionResult> Update([FromQuery] Guid? id, [FromBody] Subtask body)
     {
       if (id != null && body != null)
       {
-        Board board1 = await _boardRepository.FindById((Guid)id);
-        board1.Title = body.Title;
-        await _boardRepository.Update(board1);
-        return Ok(board1);
+        Subtask subtask = await _subtaskRepository.FindById((Guid)id);
+        subtask.Title = body.Title;
+        await _subtaskRepository.Update(subtask);
+        return Ok(subtask);
       }
       else
       {
         return BadRequest(ModelState);
       }
     }
+
     [HttpDelete]
     public async Task<IActionResult> Delete([FromQuery] Guid? id)
     {
       if (id != null)
       {
-        Board board = await _boardRepository.Delete((Guid)id);
-        return Ok(board);
+        Subtask subtask = await _subtaskRepository.Delete((Guid)id);
+        return Ok(subtask);
       }
       else
       {
