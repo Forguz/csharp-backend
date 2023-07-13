@@ -13,11 +13,9 @@ namespace KanbanTasks.Models
 
     [Column("column_id", TypeName = "UUID")]
     public Guid ColumnId { get; set; }
-    public Column Column { get; set; }
 
     [Column("board_id", TypeName = "UUID")]
     public Guid BoardId { get; set; }
-    public Board Board { get; set; }
 
     [Column("title", TypeName = "varchar(50)"), Required]
     public string Title { get; set; }

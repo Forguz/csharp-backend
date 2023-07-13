@@ -9,6 +9,10 @@ namespace KanbanTasks.Data
     public DbSet<Board> Boards { get; set; }
     public DbSet<Column> Columns { get; set; }
 
+    public DbSet<Task> Tasks { get; set; }
+
+    public DbSet<Subtask> Subtasks { get; set; }
+
     public PostgresContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,11 +33,6 @@ namespace KanbanTasks.Data
         .Property(b => b.UpdatedAt)
         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-      modelBuilder.Entity<Board>()
-        .HasMany<Column>(b => b.Columns)
-        .WithOne(c => c.Board)
-        .HasForeignKey(c => c.BoardId);
-
       modelBuilder.Entity<Column>()
         .Property(c => c.Id)
         .HasDefaultValueSql("uuid_generate_v4()");
@@ -45,16 +44,6 @@ namespace KanbanTasks.Data
       modelBuilder.Entity<Column>()
         .Property(c => c.UpdatedAt)
         .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-      modelBuilder.Entity<Column>()
-        .HasOne<Board>(c => c.Board)
-        .WithMany(b => b.Columns)
-        .HasForeignKey(c => c.BoardId);
-
-      modelBuilder.Entity<Column>()
-        .HasMany<Task>(c => c.Tasks)
-        .WithOne(t => t.Column)
-        .HasForeignKey(t => t.ColumnId);
 
       modelBuilder.Entity<Task>()
         .Property(t => t.Id)
@@ -68,21 +57,6 @@ namespace KanbanTasks.Data
         .Property(t => t.UpdatedAt)
         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-      modelBuilder.Entity<Task>()
-        .HasOne<Board>(t => t.Board)
-        .WithMany(b => b.Tasks)
-        .HasForeignKey(t => t.BoardId);
-
-      modelBuilder.Entity<Task>()
-        .HasOne<Column>(t => t.Column)
-        .WithMany(c => c.Tasks)
-        .HasForeignKey(t => t.ColumnId);
-
-      modelBuilder.Entity<Task>()
-        .HasMany<Subtask>(t => t.Subtasks)
-        .WithOne(s => s.Task)
-        .HasForeignKey(s => s.TaskId);
-
       modelBuilder.Entity<Subtask>()
         .Property(s => s.Id)
         .HasDefaultValueSql("uuid_generate_v4()");
@@ -94,11 +68,6 @@ namespace KanbanTasks.Data
       modelBuilder.Entity<Subtask>()
         .Property(s => s.UpdatedAt)
         .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-      modelBuilder.Entity<Subtask>()
-        .HasOne<Task>(s => s.Task)
-        .WithMany(t => t.Subtasks)
-        .HasForeignKey(s => s.TaskId);
     }
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {

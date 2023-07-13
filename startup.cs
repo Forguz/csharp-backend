@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using KanbanTasks.Contracts;
 using KanbanTasks.Data;
 using KanbanTasks.Repositories;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace KanbanTasks
 {
@@ -29,6 +31,10 @@ namespace KanbanTasks
       services.AddScoped<ITaskRepository, TaskRepository>();
       services.AddScoped<ISubtaskRepository, SubtaskRepository>();
       services.AddControllers();
+      services.AddControllers().AddJsonOptions(
+        o =>
+          o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+      );
     }
 
     public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

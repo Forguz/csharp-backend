@@ -17,8 +17,6 @@ namespace KanbanTasks.Models
     [Column("board_id", TypeName = "UUID")]
     public Guid BoardId { get; set; }
 
-    public Board Board { get; set; }
-
     public ICollection<Task> Tasks { get; set; } = new List<Task>();
 
     [Column("created_at"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]

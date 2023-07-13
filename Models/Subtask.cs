@@ -12,13 +12,12 @@ namespace KanbanTasks.Models
 
     [Column("task_id", TypeName = "UUID")]
     public Guid TaskId { get; set; }
-    public Task Task { get; set; }
 
     [Column("title", TypeName = "varchar(255)"), Required]
     public string Title { get; set; }
 
     [Column("is_done", TypeName = "boolean"), Required]
-    public bool Description { get; set; }
+    public bool IsDone { get; set; }
 
     [Column("created_at"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DataType(DataType.DateTime)]

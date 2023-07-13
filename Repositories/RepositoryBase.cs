@@ -18,7 +18,7 @@ namespace KanbanTasks.Repositories
       _context = context;
     }
 
-    public async Task<List<T>> FindAll()
+    public virtual async Task<List<T>> FindAll()
     {
       return await _context.Set<T>().ToListAsync();
     }
@@ -28,12 +28,12 @@ namespace KanbanTasks.Repositories
       return await _context.Set<T>().Where(expression).ToListAsync();
     }
 
-    public async Task<T> FindById(Guid id)
+    public async virtual Task<T> FindById(Guid id)
     {
       return await _context.Set<T>().FindAsync(id);
     }
 
-    public async Task<T> Create(T entity)
+    public virtual async Task<T> Create(T entity)
     {
       await _context.Set<T>().AddAsync(entity);
       await _context.SaveChangesAsync();

@@ -37,7 +37,7 @@ namespace KanbanTasks.Controllers
     {
       try
       {
-        var board = await _boardRepository.FindById(id); ;
+        var board = await _boardRepository.FindById(id);
         return board != null ? Ok(board) : NotFound();
       }
       catch (Exception ex)

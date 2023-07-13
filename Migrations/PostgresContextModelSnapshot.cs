@@ -26,10 +26,10 @@ namespace csharp_backend.Migrations
 
             modelBuilder.Entity("KanbanTasks.Models.Board", b =>
                 {
-                    b.Property<Guid>("BoardId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("UUID")
-                        .HasColumnName("board_id")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<DateTime>("CreatedAt")
@@ -49,17 +49,17 @@ namespace csharp_backend.Migrations
                         .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("BoardId");
+                    b.HasKey("Id");
 
                     b.ToTable("boards");
                 });
 
             modelBuilder.Entity("KanbanTasks.Models.Column", b =>
                 {
-                    b.Property<Guid>("ColumnId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("UUID")
-                        .HasColumnName("column_id")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<Guid>("BoardId")
@@ -83,7 +83,7 @@ namespace csharp_backend.Migrations
                         .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("ColumnId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BoardId");
 
@@ -92,10 +92,10 @@ namespace csharp_backend.Migrations
 
             modelBuilder.Entity("KanbanTasks.Models.Subtask", b =>
                 {
-                    b.Property<Guid>("SubtaskId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("UUID")
-                        .HasColumnName("subtask_id")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<DateTime>("CreatedAt")
@@ -123,7 +123,7 @@ namespace csharp_backend.Migrations
                         .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("SubtaskId");
+                    b.HasKey("Id");
 
                     b.HasIndex("TaskId");
 
@@ -132,10 +132,10 @@ namespace csharp_backend.Migrations
 
             modelBuilder.Entity("KanbanTasks.Models.Task", b =>
                 {
-                    b.Property<Guid>("TaskId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("UUID")
-                        .HasColumnName("task_id")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<Guid>("BoardId")
@@ -167,7 +167,7 @@ namespace csharp_backend.Migrations
                         .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("TaskId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BoardId");
 
@@ -190,7 +190,7 @@ namespace csharp_backend.Migrations
             modelBuilder.Entity("KanbanTasks.Models.Subtask", b =>
                 {
                     b.HasOne("KanbanTasks.Models.Task", "Task")
-                        .WithMany()
+                        .WithMany("Subtasks")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -207,7 +207,7 @@ namespace csharp_backend.Migrations
                         .IsRequired();
 
                     b.HasOne("KanbanTasks.Models.Column", "Column")
-                        .WithMany()
+                        .WithMany("Tasks")
                         .HasForeignKey("ColumnId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -222,6 +222,16 @@ namespace csharp_backend.Migrations
                     b.Navigation("Columns");
 
                     b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("KanbanTasks.Models.Column", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("KanbanTasks.Models.Task", b =>
+                {
+                    b.Navigation("Subtasks");
                 });
 #pragma warning restore 612, 618
         }
